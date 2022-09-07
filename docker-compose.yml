@@ -1,0 +1,67 @@
+version: "3.7"
+
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    container_name: nginx
+    ports:
+      - "80:80"
+    volumes:
+      - .:/app/
+    depends_on:
+      - app
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile.amazon.copy
+    container_name: app
+    working_dir: /app
+    volumes:
+      - ".:/app"
+    ports:
+      - "9000:9000"
+    tty: true
+    depends_on:
+      - mysql
+      - redis
+
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - "./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf"
+      - db-praha-query:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: laravel
+      MYSQL_USER: query
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    container_name: mysql
+
+  mysql-test:
+    image: mysql:5.7
+    ports:
+      - 3000:3306
+    volumes:
+      - "./docker/mysql/my.cnf:/etc/mysql/conf.d/my.cnf"
+      - test-praha-query:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: test
+      MYSQL_USER: user
+      MYSQL_PASSWORD: root
+      MYSQL_ROOT_PASSWORD: root
+    container_name: mysql-test
+
+  redis:
+    image: redis:5.0.5-alpine
+    container_name: redis
+    ports:
+    - "6379:6379"
+
+volumes:
+    db-praha-query:
+    test-praha-query:
