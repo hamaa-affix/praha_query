@@ -3,11 +3,14 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Product;
 use Illuminate\Database\Seeder;
 use Database\Seeders\TaxRateTableSeeder;
 use Database\Seeders\PaymentTableSeeder;
 use Database\Seeders\UserTableSeeder;
 use Database\Seeders\PaymentMethodTableSeeder;
+use Database\Seeders\ProductTableSeeder;
 class DatabaseSeeder extends Seeder
 {
     /**
@@ -21,7 +24,8 @@ class DatabaseSeeder extends Seeder
             TaxRateTableSeeder::class,
             PaymentTableSeeder::class,
             UserTableSeeder::class,
-            PaymentMethodTableSeeder::class
+            PaymentMethodTableSeeder::class,
+            ProductTableSeeder::class
         ]);
     }
 }
